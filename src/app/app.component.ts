@@ -3,7 +3,7 @@ import { HousingLocationComponent } from './housing-location/housing-location.co
 import { CommonModule } from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import { HousingLocation } from './housinglocation';
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {Route} from '@angular/router';
 
 @Component({
@@ -12,15 +12,23 @@ import {Route} from '@angular/router';
   styleUrls: ['./app.component.css'],
   imports: [RouterModule]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'homes';
 
   constructor(private router: Router) {
   }
 
-  goHome() {
+  ngOnInit() {
+    if(this.router.url !== '/') {
+      console.log("ngOnInit works!");
+      this.goHome();
+    }
+  }
+
+goHome(): void {
+    console.log("goHome page");
     this.router.navigate(['/']).then(() => {
       window.location.reload();
-    })
+    });
   }
 }

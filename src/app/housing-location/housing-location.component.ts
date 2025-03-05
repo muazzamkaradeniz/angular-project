@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HousingLocation } from '../housinglocation';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './housing-location.component.html',
   styleUrls: ['./housing-location.component.css'],
 })
-export class HousingLocationComponent {
+export class HousingLocationComponent  implements OnInit  {
   @Input() housingLocation!: HousingLocation;
 
   ngOnInit(){

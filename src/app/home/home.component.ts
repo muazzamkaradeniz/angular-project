@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
 import { HousingLocation } from '../housinglocation';
@@ -11,12 +11,16 @@ import {Router} from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit {
   housingLocationList: HousingLocation[] = [];
-  filteredLocationList: HousingLocation[] = [];
   housingService: HousingService = inject(HousingService);
+  filteredLocationList: HousingLocation[] = [];
 
   @ViewChild('filter') filter!: ElementRef;
+
+  ngAfterViewInit() {
+    console.log("Filter input:", this.filter );
+  }
 
   constructor(private router: Router) {
     this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
@@ -25,8 +29,13 @@ export class HomeComponent {
     });
 
   }
-
   filterResults() {
+    console.log("Search button clicked!");
+
+    if(!this.filter || !this.filter.nativeElement) {
+      console.log("Filter input is undefined!");
+      return;
+    }
     const text = this.filter.nativeElement.value;
     if (!text) {
       this.filteredLocationList = this.housingLocationList;
@@ -35,12 +44,6 @@ export class HomeComponent {
     this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
       housingLocation?.city.toLowerCase().includes(text.toLowerCase()),
     );
-  }
-
-  goHome(){
-    console.log("goHome() funktioniert!");
-    this.filteredLocationList = this.housingLocationList;
-    this.router.navigate(['/']);
   }
 }
 
